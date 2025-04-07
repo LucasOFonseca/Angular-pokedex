@@ -1,3 +1,25 @@
+export type PokemonType =
+  | 'normal'
+  | 'fighting'
+  | 'flying'
+  | 'poison'
+  | 'ground'
+  | 'rock'
+  | 'bug'
+  | 'ghost'
+  | 'steel'
+  | 'fire'
+  | 'water'
+  | 'grass'
+  | 'electric'
+  | 'psychic'
+  | 'ice'
+  | 'dragon'
+  | 'dark'
+  | 'fairy'
+  | 'stellar'
+  | 'unknown';
+
 export interface Ability {
   name: string;
   url: string;
@@ -25,7 +47,7 @@ export interface PokemonDetails {
   };
   types: {
     type: {
-      name: string;
+      name: PokemonType;
     };
   }[];
 }

@@ -1,8 +1,13 @@
 @if (pokemonList$ | async) {
-<div class="flex ">
+<div
+  infiniteScroll
+  [infiniteScrollDistance]="1"
+  [infiniteScrollThrottle]="200"
+  class="max-w-[1320px] mx-auto flex flex-wrap gap-5"
+  (scrolled)="onScroll()"
+>
   @for (pokemon of pokemonList()?.results; track pokemon.url) {
-  <app-pokemon-card [pokemon]="pokemon" />
-
+  <app-pokemon-card *ngIf="pokemon" [pokemon]="pokemon" />
   }
 </div>
 } @else {

@@ -19,4 +19,22 @@ export class PokemonService {
       .get<PokemonList>(`${this.baseUrl}pokemon`)
       .pipe(tap((pokemonList) => this.pokemonList.set(pokemonList)));
   }
+
+  fetchNextPokemonList() {
+    return this.httpClient
+      .get<PokemonList>(this.pokemonList()?.next ?? `${this.baseUrl}pokemon`)
+      .pipe(
+        tap((pokemonList) =>
+          this.pokemonList.update((current) =>
+            current
+              ? {
+                  ...current,
+                  results: [...current.results, ...pokemonList.results],
+                  next: pokemonList.next,
+                }
+              : pokemonList
+          )
+        )
+      );
+  }
 }

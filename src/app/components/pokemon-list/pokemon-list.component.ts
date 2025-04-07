@@ -1,11 +1,12 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
+import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { PokemonService } from '../../shared/services/pokemon.service';
 import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.component';
 
 @Component({
   selector: 'app-pokemon-list',
-  imports: [AsyncPipe, PokemonCardComponent],
+  imports: [AsyncPipe, PokemonCardComponent, InfiniteScrollDirective, NgIf],
   templateUrl: './pokemon-list.component.html',
 })
 export class PokemonListComponent {
@@ -15,4 +16,8 @@ export class PokemonListComponent {
 
   isLoadingList = this.pokemonService.isLoadingList;
   pokemonList = this.pokemonService.pokemonList;
+
+  onScroll() {
+    this.pokemonService.fetchNextPokemonList().subscribe();
+  }
 }

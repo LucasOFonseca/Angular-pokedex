@@ -46,7 +46,26 @@ $app-dark-theme: mat.define-theme(
   )
 );
 
+@keyframes jump {
+  0% {
+    transform: translateY(0);
+  }
+  49% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-0.5rem);
+  }
+  99% {
+    transform: translateY(-0.5rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
 :root {
+  --jump-animation: jump 0.5s infinite;
   --app-primary: #{mat.get-theme-color($app-light-theme, primary)};
   --app-background: #fff;
   --app-on-background: #{mat.get-theme-color($app-light-theme, neutral, 20)};
@@ -354,7 +373,7 @@ html.dark {
 
   & {
     --app-primary: #{mat.get-theme-color($app-dark-theme, primary)};
-    --app-background: #{mat.get-theme-color($app-dark-theme, neutral, 20)};
+    --app-background: #121212;
     --app-on-background: #fff;
     --app-inverse: #{mat.get-theme-color($app-dark-theme, neutral, 50)};
     --app-neutral-0: #{mat.get-theme-color($app-dark-theme, neutral, 100)};
