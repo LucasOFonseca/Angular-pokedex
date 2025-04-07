@@ -1,0 +1,10 @@
+@if (pokemonList$ | async) {
+<div class="flex ">
+  @for (pokemon of pokemonList()?.results; track pokemon.url) {
+  <app-pokemon-card [pokemon]="pokemon" />
+
+  }
+</div>
+} @else {
+<p>loading...</p>
+}

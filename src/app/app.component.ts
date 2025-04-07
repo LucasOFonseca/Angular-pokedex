@@ -1,12 +1,19 @@
-import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { afterNextRender, Component, inject } from '@angular/core';
+import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
+import { ToggleThemeButtonComponent } from './shared/components/toggle-theme-button/toggle-theme-button.component';
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [ToggleThemeButtonComponent, PokemonListComponent],
 })
 export class AppComponent {
-  title = 'angular-pokedex';
+  readonly themeService = inject(ThemeService);
+
+  constructor() {
+    afterNextRender(() => {
+      this.themeService.getUserPreferredColorTheme();
+    });
+  }
 }
