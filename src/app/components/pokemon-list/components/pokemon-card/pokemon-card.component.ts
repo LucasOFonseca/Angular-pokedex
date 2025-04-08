@@ -1,6 +1,7 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
-import { finalize, Observable } from 'rxjs';
+import { finalize } from 'rxjs';
+import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { TypeChipComponent } from '../../../../shared/components/type-chip/type-chip.component';
 import { PokemonDetails } from '../../../../shared/models/pokemon-details.model';
 import { Pokemon } from '../../../../shared/models/pokemon.model';
@@ -9,7 +10,7 @@ import { typeColors } from '../../../../shared/utils/type-colors';
 
 @Component({
   selector: 'app-pokemon-card',
-  imports: [TitleCasePipe, TypeChipComponent],
+  imports: [TitleCasePipe, TypeChipComponent, LoadingSpinnerComponent],
   templateUrl: './pokemon-card.component.html',
 })
 export class PokemonCardComponent {
@@ -17,26 +18,21 @@ export class PokemonCardComponent {
 
   readonly pokemonDetailsService = inject(PokemonDetailsService);
 
-  details$: Observable<PokemonDetails> | undefined;
-
   isLoading = false;
   details: PokemonDetails | undefined;
   typeColors = typeColors;
 
   ngOnInit() {
-    this.details$ = this.pokemonDetailsService.fetchPokemonDetails(
-      this.pokemon?.url ?? ''
-    );
-
     this.details = this.pokemonDetailsService.getDetailsByName(
-      this.pokemon?.url ?? ''
+      this.pokemon?.name ?? ''
     );
 
     if (this.details) return;
 
     this.isLoading = true;
 
-    this.details$
+    this.pokemonDetailsService
+      .fetchPokemonDetails(this.pokemon?.url ?? '')
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((data) => (this.details = data));
   }

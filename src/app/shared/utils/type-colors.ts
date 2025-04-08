@@ -1,4 +1,4 @@
-import { PokemonType } from '../models/pokemon-details.model';
+import { PokemonType } from '../models/pokemon-type.model';
 
 export const typeColors: Record<
   PokemonType,
@@ -100,6 +100,11 @@ export const typeColors: Record<
     cardBg: 'before:bg-[#72a463]',
   },
   unknown: {
+    chip: 'bg-[#808080]',
+    defaultBg: 'bg-[#a2a2a2]',
+    cardBg: 'before:bg-[#a2a2a2]',
+  },
+  shadow: {
     chip: 'bg-[#2A2A2A]',
     defaultBg: 'bg-[#a2a2a2]',
     cardBg: 'before:bg-[#a2a2a2]',

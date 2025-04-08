@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from '../../../environments/environment.prod';
-import { PokemonList } from '../models/pokemon.model';
+import { Pokemon, PokemonList } from '../models/pokemon.model';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +18,21 @@ export class PokemonService {
     return this.httpClient
       .get<PokemonList>(`${this.baseUrl}pokemon`)
       .pipe(tap((pokemonList) => this.pokemonList.set(pokemonList)));
+  }
+
+  fetchPokemonListByType(typeUrl: string) {
+    return this.httpClient
+      .get<{ pokemon: { pokemon: Pokemon }[] }>(typeUrl)
+      .pipe(
+        tap(({ pokemon }) =>
+          this.pokemonList.set({
+            count: pokemon.length,
+            next: '',
+            previous: '',
+            results: pokemon.map(({ pokemon }) => pokemon),
+          })
+        )
+      );
   }
 
   fetchNextPokemonList() {

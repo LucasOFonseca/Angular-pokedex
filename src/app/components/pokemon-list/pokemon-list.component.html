@@ -1,7 +1,8 @@
-@if (pokemonList$ | async) {
+@if (pokemonList()) {
 <div
   infiniteScroll
-  [infiniteScrollDistance]="1"
+  [scrollWindow]="true"
+  [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="200"
   class="max-w-[1320px] mx-auto flex flex-wrap gap-5"
   (scrolled)="onScroll()"

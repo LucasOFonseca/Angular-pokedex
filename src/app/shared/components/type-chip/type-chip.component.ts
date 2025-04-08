@@ -1,6 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
-import { PokemonType } from '../../models/pokemon-details.model';
+import { PokemonType } from '../../models/pokemon-type.model';
 import { typeColors } from '../../utils/type-colors';
 
 @Component({
