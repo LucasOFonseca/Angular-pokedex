@@ -1,3 +1,11 @@
-<button class="fixed top-4 right-4" (click)="themeService.toggleTheme()">
-  toggle theme
+<button
+  mat-icon-button
+  style="display: flex"
+  (click)="themeService.toggleTheme()"
+>
+  @if (themeService.currentTheme() === 'dark') {
+  <mat-icon class="font-icon">light_mode</mat-icon>
+  } @else {
+  <mat-icon class="font-icon" style="color: white">dark_mode</mat-icon>
+  }
 </button>

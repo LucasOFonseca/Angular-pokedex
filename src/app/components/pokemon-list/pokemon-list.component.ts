@@ -1,11 +1,13 @@
 import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { PokemonType } from '../../shared/models/pokemon-type.model';
+import { distinctUntilChanged, map } from 'rxjs';
 import { PokemonService } from '../../shared/services/pokemon.service';
 import { TypeServiceService } from '../../shared/services/type-service.service';
 import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.component';
+import { PokemonDetailsDialogComponent } from './components/pokemon-details-dialog/pokemon-details-dialog.component';
 
 @Component({
   selector: 'app-pokemon-list',
@@ -13,9 +15,13 @@ import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.com
   templateUrl: './pokemon-list.component.html',
 })
 export class PokemonListComponent {
-  constructor(private activatedRoute: ActivatedRoute) {
-    activatedRoute.queryParamMap.subscribe((params) => {
-      const selectedType = params.get('type') as PokemonType;
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {
+    const type$ = activatedRoute.queryParamMap.pipe(
+      map((params) => params.get('type')),
+      distinctUntilChanged()
+    );
+
+    type$.subscribe((selectedType) => {
       const typeUrl =
         this.pokemonTypes()?.results.find((type) => type.name === selectedType)
           ?.url ?? null;
@@ -26,7 +32,20 @@ export class PokemonListComponent {
         this.pokemonService.fetchPokemonList().subscribe();
       }
     });
+
+    const pokemon$ = activatedRoute.queryParamMap.pipe(
+      map((params) => params.get('pokemon')),
+      distinctUntilChanged()
+    );
+
+    pokemon$.subscribe((pokemonParam) => {
+      if (pokemonParam) {
+        this.openPokemonDetails(parseInt(pokemonParam));
+      }
+    });
   }
+
+  readonly dialog = inject(MatDialog);
 
   readonly typeService = inject(TypeServiceService);
   readonly pokemonService = inject(PokemonService);
@@ -34,6 +53,24 @@ export class PokemonListComponent {
   isLoadingList = this.pokemonService.isLoadingList;
   pokemonList = this.pokemonService.pokemonList;
   pokemonTypes = this.typeService.pokemonTypes;
+
+  openPokemonDetails(pokemonId: number) {
+    const dialogRef = this.dialog.open(PokemonDetailsDialogComponent, {
+      width: '100%',
+      maxWidth: '1290px',
+      height: '100%',
+      maxHeight: '685px',
+      data: { pokemonId },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: { pokemon: null },
+        queryParamsHandling: 'merge',
+      });
+    });
+  }
 
   onScroll() {
     if (!this.pokemonList()?.next) return;

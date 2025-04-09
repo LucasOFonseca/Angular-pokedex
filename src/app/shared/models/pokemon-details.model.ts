@@ -22,8 +22,17 @@ export interface PokemonDetails {
   base_experience: number;
   height: number;
   weight: number;
+  cries: { latest: string };
   sprites: {
     front_default: string;
+    other: {
+      'official-artwork': {
+        front_default: string;
+      };
+      showdown: {
+        front_default: string;
+      };
+    };
   };
   types: {
     type: {

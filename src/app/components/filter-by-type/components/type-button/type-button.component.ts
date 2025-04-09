@@ -25,6 +25,7 @@ export class TypeButtonComponent {
     this.router.navigate([], {
       relativeTo: this.activatedRoute,
       queryParams: { type: this.type === this.selectedType ? null : this.type },
+      queryParamsHandling: 'merge',
     });
   }
 }

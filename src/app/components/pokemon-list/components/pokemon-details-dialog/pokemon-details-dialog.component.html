@@ -1,0 +1,73 @@
+<div class="flex h-full">
+  @if (details) {
+  <div class="flex-1 p-10">
+    <div class="flex items-center justify-between w-full">
+      <div class="flex items-center gap-2">
+        <img
+          class="hover:cursor-pointer"
+          [src]="details.sprites.other.showdown.front_default"
+          [alt]="details.name"
+          (click)="playCry()"
+        />
+
+        <h5 class="font-bold text-2xl">{{ details.name | titlecase }}</h5>
+      </div>
+
+      <span class="font-bold text-2xl text-neutral-600"
+        >#{{ details.id.toString().padStart(3, "0") }}</span
+      >
+    </div>
+
+    <div class="flex gap-2 mt-2 mb-8">
+      @for (type of details.types; track type.type.name) {
+      <app-type-chip [type]="type.type.name" />
+      }
+    </div>
+
+    <div
+      class="w-full flex border-y border-neutral-300 dark:border-neutral-600 py-4"
+    >
+      <div class="flex-1 border-r border-neutral-300 dark:border-neutral-600">
+        <h6 class="text-neutral-600 text-center">Weight</h6>
+
+        <p class="text-center">{{ details.weight | hectogramToKilogram }} kg</p>
+      </div>
+
+      <div class="flex-1 border-r border-neutral-300 dark:border-neutral-600">
+        <h6 class="text-neutral-600 text-center">Height</h6>
+
+        <p class="text-center">
+          {{ details.height | decimeterToCentimeter }} cm
+        </p>
+      </div>
+
+      <div class="flex-1">
+        <h6 class="text-neutral-600 text-center">Abilities</h6>
+
+        <div class="flex gap-2 justify-center">
+          @for(ability of details.abilities; track ability.ability.name) {
+          <p class="text-center">
+            {{ ability.ability.name | titlecase }}
+          </p>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="flex items-center justify-center h-full w-[520px] {{
+      typeColors[details.types[0].type.name].defaultBg
+    }}"
+  >
+    <div
+      class="w-[410px] h-[410px] flex items-center justify-center bg-[url(/Pokeball.svg)] bg-contain bg-center bg-no-repeat"
+    >
+      <img
+        [src]="details.sprites.other['official-artwork'].front_default"
+        [alt]="details.name"
+      />
+    </div>
+  </div>
+  }
+</div>

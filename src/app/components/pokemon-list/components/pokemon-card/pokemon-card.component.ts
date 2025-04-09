@@ -1,5 +1,6 @@
 import { TitleCasePipe } from '@angular/common';
 import { Component, inject, Input } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { finalize } from 'rxjs';
 import { LoadingSpinnerComponent } from '../../../../shared/components/loading-spinner/loading-spinner.component';
 import { TypeChipComponent } from '../../../../shared/components/type-chip/type-chip.component';
@@ -14,6 +15,8 @@ import { typeColors } from '../../../../shared/utils/type-colors';
   templateUrl: './pokemon-card.component.html',
 })
 export class PokemonCardComponent {
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+
   @Input() pokemon!: Pokemon | undefined;
 
   readonly pokemonDetailsService = inject(PokemonDetailsService);
@@ -35,5 +38,13 @@ export class PokemonCardComponent {
       .fetchPokemonDetails(this.pokemon?.url ?? '')
       .pipe(finalize(() => (this.isLoading = false)))
       .subscribe((data) => (this.details = data));
+  }
+
+  handleSelectPokemon() {
+    this.router.navigate([], {
+      relativeTo: this.activatedRoute,
+      queryParams: { pokemon: this.details?.id },
+      queryParamsHandling: 'merge',
+    });
   }
 }
