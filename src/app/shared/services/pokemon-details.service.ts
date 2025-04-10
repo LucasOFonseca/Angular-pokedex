@@ -33,6 +33,16 @@ export class PokemonDetailsService {
       );
   }
 
+  fetchPokemonDetailsByName(name: string) {
+    return this.httpClient
+      .get<PokemonDetails>(`${this.baseUrl}pokemon/${name}`)
+      .pipe(
+        tap((pokemonDetails) =>
+          this.pokemonDetailsList.update((rest) => [...rest, pokemonDetails])
+        )
+      );
+  }
+
   getDetailsByName(name: string) {
     return this.pokemonDetailsList().find((pokemon) => pokemon.name === name);
   }

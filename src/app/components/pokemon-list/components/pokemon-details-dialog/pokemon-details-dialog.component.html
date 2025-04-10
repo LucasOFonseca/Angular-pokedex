@@ -1,6 +1,6 @@
 <div class="flex h-full">
   @if (details) {
-  <div class="flex-1 p-10">
+  <div class="flex-1 p-10 overflow-y-auto">
     <div class="flex items-center justify-between w-full">
       <div class="flex items-center gap-2">
         <img
@@ -24,19 +24,35 @@
       }
     </div>
 
+    @if (evolutionPaths.length > 0 && evolutionPaths[0].length > 1) {
+    <div class="flex flex-col items-center justify-center mb-4">
+      @for (paths of evolutionPaths; track $index;) {
+      <div class="flex items-center">
+        @for (item of paths; track item.name) {
+        <app-evolution-chain-item [name]="item.name" />
+
+        <mat-icon *ngIf="!$last">arrow_right_alt</mat-icon>
+        }
+      </div>
+      }
+    </div>
+    }
+
     <div
       class="w-full flex border-y border-neutral-300 dark:border-neutral-600 py-4"
     >
       <div class="flex-1 border-r border-neutral-300 dark:border-neutral-600">
         <h6 class="text-neutral-600 text-center">Weight</h6>
 
-        <p class="text-center">{{ details.weight | hectogramToKilogram }} kg</p>
+        <p class="font-bold text-center">
+          {{ details.weight | hectogramToKilogram }} kg
+        </p>
       </div>
 
       <div class="flex-1 border-r border-neutral-300 dark:border-neutral-600">
         <h6 class="text-neutral-600 text-center">Height</h6>
 
-        <p class="text-center">
+        <p class="font-bold text-center">
           {{ details.height | decimeterToCentimeter }} cm
         </p>
       </div>
@@ -46,13 +62,30 @@
 
         <div class="flex gap-2 justify-center">
           @for(ability of details.abilities; track ability.ability.name) {
-          <p class="text-center">
+          <p class="font-bold text-center">
             {{ ability.ability.name | titlecase }}
           </p>
           }
         </div>
       </div>
     </div>
+
+    @if (isLoadingSpecies) {
+    <div class="flex items-center justify-center mt-8">
+      <app-loading-spinner />
+    </div>
+    } @else if (species) {
+    <div class="mt-8">
+      @for (flavorText of species.flavor_text_entries; track
+      flavorText.version.name) {
+      <h6 class="font-bold text-lg">
+        Pokémon {{ flavorText.version.name | titlecase }}
+      </h6>
+
+      <p class="mb-8">{{ flavorText.flavor_text }}</p>
+      }
+    </div>
+    }
   </div>
 
   <div

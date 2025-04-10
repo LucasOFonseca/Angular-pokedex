@@ -1,0 +1,19 @@
+<div
+  [ngClass]="{
+    'opacity-25 hover:cursor-pointer hover:opacity-50':
+      pokemonQueryParam !== details?.id
+  }"
+  class="flex flex-col items-center"
+  (click)="goToDetails()"
+>
+  @if (isLoadingDetails) {
+  <app-loading-spinner />
+  } @else {
+
+  <img [src]="details?.sprites?.front_default" [alt]="name" />
+  }
+
+  <p class="font-bold text-center">
+    {{ details?.name | titlecase }}
+  </p>
+</div>

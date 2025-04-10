@@ -1,6 +1,6 @@
 import { NgIf } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
 import { distinctUntilChanged, map } from 'rxjs';
@@ -46,6 +46,7 @@ export class PokemonListComponent {
   }
 
   readonly dialog = inject(MatDialog);
+  dialogRef: MatDialogRef<PokemonDetailsDialogComponent, any> | undefined;
 
   readonly typeService = inject(TypeServiceService);
   readonly pokemonService = inject(PokemonService);
@@ -55,7 +56,9 @@ export class PokemonListComponent {
   pokemonTypes = this.typeService.pokemonTypes;
 
   openPokemonDetails(pokemonId: number) {
-    const dialogRef = this.dialog.open(PokemonDetailsDialogComponent, {
+    if (this.dialogRef) return;
+
+    this.dialogRef = this.dialog.open(PokemonDetailsDialogComponent, {
       width: '100%',
       maxWidth: '1290px',
       height: '100%',
@@ -63,12 +66,14 @@ export class PokemonListComponent {
       data: { pokemonId },
     });
 
-    dialogRef.afterClosed().subscribe(() => {
+    this.dialogRef.afterClosed().subscribe(() => {
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParams: { pokemon: null },
         queryParamsHandling: 'merge',
       });
+
+      this.dialogRef = undefined;
     });
   }
 

@@ -23,6 +23,7 @@ export interface PokemonDetails {
   height: number;
   weight: number;
   cries: { latest: string };
+  species: { url: string };
   sprites: {
     front_default: string;
     other: {
