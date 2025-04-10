@@ -1,5 +1,6 @@
 import { NgIf, TitleCasePipe } from '@angular/common';
 import { Component, inject, model } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ActivatedRoute } from '@angular/router';
@@ -28,6 +29,7 @@ interface DialogData {
     DecimeterToCentimeterPipe,
     LoadingSpinnerComponent,
     EvolutionChainItemComponent,
+    MatButtonModule,
     MatIcon,
     NgIf,
   ],
@@ -181,5 +183,9 @@ export class PokemonDetailsDialogComponent {
     }
 
     if (this.cry.paused) this.cry.play();
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 }

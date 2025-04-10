@@ -1,10 +1,16 @@
-<div class="flex h-full">
+<div class="relative flex max-[860px]:flex-col-reverse h-full">
+  <div class="absolute top-4 right-4 min-[860px]:hidden">
+    <button mat-icon-button (click)="closeDialog()" style="display: flex">
+      <mat-icon class="font-icon">close</mat-icon>
+    </button>
+  </div>
+
   @if (details) {
-  <div class="flex-1 p-10 overflow-y-auto">
+  <div class="flex-1 px-2 py-5 min-[860px]:p-10 overflow-y-auto">
     <div class="flex items-center justify-between w-full">
       <div class="flex items-center gap-2">
         <img
-          class="hover:cursor-pointer"
+          class="hover:cursor-pointer max-[860px]:hidden"
           [src]="details.sprites.other.showdown.front_default"
           [alt]="details.name"
           (click)="playCry()"
@@ -89,16 +95,24 @@
   </div>
 
   <div
-    class="flex items-center justify-center h-full w-[520px] {{
+    class="flex items-center justify-center h-[250px] w-full min-[860px]:h-full min-[860px]:w-[430px] lg:w-[520px] {{
       typeColors[details.types[0].type.name].defaultBg
     }}"
   >
     <div
-      class="w-[410px] h-[410px] flex items-center justify-center bg-[url(/Pokeball.svg)] bg-contain bg-center bg-no-repeat"
+      class="w-[225px] h-[225px] min-[860px]:w-[410px] min-[860px]:h-[410px] flex items-center justify-center bg-[url(/Pokeball.svg)] bg-contain bg-center bg-no-repeat"
     >
       <img
+        class="max-[860px]:hidden"
         [src]="details.sprites.other['official-artwork'].front_default"
         [alt]="details.name"
+      />
+
+      <img
+        class="hover:cursor-pointer min-[860px]:hidden"
+        [src]="details.sprites.other.showdown.front_default"
+        [alt]="details.name"
+        (click)="playCry()"
       />
     </div>
   </div>

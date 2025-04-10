@@ -3,7 +3,7 @@ import { Component, inject } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { InfiniteScrollDirective } from 'ngx-infinite-scroll';
-import { distinctUntilChanged, map } from 'rxjs';
+import { distinctUntilChanged, finalize, map } from 'rxjs';
 import { PokemonService } from '../../shared/services/pokemon.service';
 import { TypeServiceService } from '../../shared/services/type-service.service';
 import { PokemonCardComponent } from './components/pokemon-card/pokemon-card.component';
@@ -62,19 +62,20 @@ export class PokemonListComponent {
       width: '100%',
       maxWidth: '1290px',
       height: '100%',
-      maxHeight: '685px',
+      panelClass: ['min-[860px]:max-h-[685px]!', 'mx-2', 'self-center'],
       data: { pokemonId },
     });
 
-    this.dialogRef.afterClosed().subscribe(() => {
-      this.router.navigate([], {
-        relativeTo: this.activatedRoute,
-        queryParams: { pokemon: null },
-        queryParamsHandling: 'merge',
+    this.dialogRef
+      .afterClosed()
+      .pipe(finalize(() => (this.dialogRef = undefined)))
+      .subscribe(() => {
+        this.router.navigate([], {
+          relativeTo: this.activatedRoute,
+          queryParams: { pokemon: null },
+          queryParamsHandling: 'merge',
+        });
       });
-
-      this.dialogRef = undefined;
-    });
   }
 
   onScroll() {

@@ -4,7 +4,7 @@
   [scrollWindow]="true"
   [infiniteScrollDistance]="2"
   [infiniteScrollThrottle]="200"
-  class="max-w-[1320px] mx-auto flex flex-wrap gap-5"
+  class="mx-4 gap-2 max-[860px]:flex-col min-[860px]:max-w-[860px] min-[1300px]:max-w-[1320px] min-[860px]:mx-auto flex flex-wrap min-[860px]:gap-5"
   (scrolled)="onScroll()"
 >
   @for (pokemon of pokemonList()?.results; track pokemon.url) {
